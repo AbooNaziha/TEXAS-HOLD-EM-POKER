@@ -5,4 +5,43 @@ class GameRound():
 
 
     def play(self):
-        self.deck.shuffle() 
+        self._shuffle_deck()
+        self._deal_initial_two_cards_to_each_players()
+        self._make_bets()
+
+        self._deals_flop_cards()
+        self._make_bets()
+
+        self._deal_turn_card()
+        self._make_bets()
+
+        self._deal_river_card()
+        self._make_bets()
+
+        
+    def _shuffle_deck(self):
+        self.deck.shuffle()
+
+    def _deal_initial_two_cards_to_each_players(self):
+        for player in self.players:
+            two_cards = self.deck.remove_card(2)
+            player.add_cards(two_cards)
+
+    def _make_bets(self):
+        for player in self.players:
+            if player.want_to_fold():
+                self.players.remove(player)
+
+    def _deal_community_cards(self, number):
+        community_cards = self.deck.remove_card(number)
+        for player in self.players:
+            player.add_cards(community_cards)
+
+    def _deals_flop_cards(self):
+        self._deal_community_cards(3)
+
+    def _deal_turn_card(self):
+       self._deal_community_cards(1)
+
+    def _deal_river_card(self):
+       self._deal_community_cards(1)
