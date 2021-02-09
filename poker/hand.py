@@ -1,3 +1,5 @@
+from poker.validator import HighCardValidator, NoCardValidator
+
 class Hand():
     def __init__(self):
         self.cards = []
@@ -24,8 +26,8 @@ class Hand():
             ("Three of a Kind", self._three_of_kind),
             ("Two Pair", self._two_of_pair),
             ("Pair", self._pair),
-            ("High Card", self._high_card),
-            ("No Card", self._no_cards)
+            ("High Card", HighCardValidator(cards = self.cards).is_valid),
+            ("No Card", NoCardValidator(cards = self.cards).is_valid)
         )
  
     def best_rank(self):
@@ -84,12 +86,6 @@ class Hand():
     def _pair(self):
         ranks_with_pairs = self._ranks_with_count(2)
         return len(ranks_with_pairs) == 1
-
-    def _high_card(self):
-        return len(self.cards) >= 2
-
-    def _no_cards(self):
-        return len(self.cards) == 0
 
     def _ranks_with_count(self, count):
         return {
