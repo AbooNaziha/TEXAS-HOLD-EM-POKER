@@ -87,9 +87,9 @@ class CardTest(unittest.TestCase):
         Ace_of_hearts = Card(rank = "Ace", suit = "Hearts")
 
         unsorted_cards = [
+            five_of_diamonds,
             two_of_spades,
             five_of_clubs,
-            five_of_diamonds,
             eight_of_spades,
             Ace_of_hearts
         ]
