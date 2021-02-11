@@ -41,40 +41,7 @@ class HandTest(unittest.TestCase):
             ]
         )
 
-    def test_figure_out_three_of_a_kind_is_best_rank(self):
-        cards = [
-            Card(rank = "King", suit = "Clubs"),
-            Card(rank = "King", suit = "Hearts"),
-            Card(rank = "King", suit = "Diamonds"),
-            Card(rank = "Ace", suit = "Spades"),
-            Card(rank = "5", suit = "Clubs")
-        ]
-
-        hand = Hand()
-        hand.add_cards(cards)
-
-        self.assertEqual(
-            hand.best_rank(),
-            "Three of a Kind"
-        )
-
-    def test_figure_out_straight_is_best_rank(self):
-        cards = [
-            Card(rank = "6", suit = "Hearts"),
-            Card(rank = "7", suit = "Diamonds"),
-            Card(rank = "8", suit = "Spades"),
-            Card(rank = "9", suit = "Clubs"),
-            Card(rank = "10", suit = "Clubs")
-        ]
     
-        hand = Hand()
-        hand.add_cards(cards)
-
-        self.assertEqual(
-            hand.best_rank(),
-            "Straight"
-        )
-
     def test_figure_out_two_consecutive_card_is_not_straight(self):
         cards = [
             Card(rank = "6", suit = "Hearts"),

@@ -1,4 +1,6 @@
 from poker.validator import (
+    StraightValidator,
+    ThreeOfAKindValidator,
     TwoPairValidator,
     PairValidator,
     HighCardValidator,
@@ -27,8 +29,8 @@ class Hand():
             ("Four of a Kind", self._four_of_a_kind),
             ("Full House", self._full_house),
             ("Flush", self._flush),
-            ("Straight", self._straight),
-            ("Three of a Kind", self._three_of_kind),
+            ("Straight", StraightValidator(cards = self.cards).is_valid),
+            ("Three of a Kind", ThreeOfAKindValidator(cards = self.cards).is_valid),
             ("Two Pair", TwoPairValidator(cards = self.cards).is_valid),
             ("Pair", PairValidator(cards = self.cards).is_valid),
             ("High Card", HighCardValidator(cards = self.cards).is_valid),
@@ -42,21 +44,21 @@ class Hand():
                 return name
 
     def _royal_flush(self):
-        is_straight_flush = self._straight_flush()
+        is_straight_flush = StraightValidator(cards = self.cards).is_valid()
         if not is_straight_flush:
             return False
         is_royal = self.cards[-1].rank == "Ace"
         return is_straight_flush and is_royal
     
     def _straight_flush(self):
-        return self._flush() and self._straight()
+        return self._flush() and StraightValidator(cards = self.cards).is_valid()
 
     def _four_of_a_kind(self):
         ranks_with_four_of_a_kind = self._ranks_with_count(4)
         return len(ranks_with_four_of_a_kind) == 1
 
     def _full_house(self):
-        return self._three_of_kind() and PairValidator(cards = self.cards).is_valid()
+        return ThreeOfAKindValidator(cards = self.cards).is_valid() and PairValidator(cards = self.cards).is_valid()
 
     def _flush(self):
         suits_that_occur_5_or_more_time = {
@@ -66,24 +68,6 @@ class Hand():
         }
 
         return len(suits_that_occur_5_or_more_time) == 1
-
-
-    def _straight(self):
-        if len(self.cards) < 5:
-            return False
-
-        rank_indexes = [card.rank_index for card in self.cards]
-        starting_rank_index = rank_indexes[0]
-        last_rank_index = rank_indexes[-1]
-        straight_consecutives_indexes = list(
-            range(starting_rank_index, last_rank_index + 1)
-        )
-        return rank_indexes == straight_consecutives_indexes
-
-    def _three_of_kind(self):
-        ranks_with_three_of_a_kind = self._ranks_with_count(3)
-        return len(ranks_with_three_of_a_kind) == 1
-        
        
     def _ranks_with_count(self, count):
         return {
